@@ -1,2 +1,4 @@
 PyGithub
 PyYAML
+pytest
+flexmock
