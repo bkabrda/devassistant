@@ -6,6 +6,10 @@ GUI_MESSAGE = "Developer Assistant GUI requires a running X server."
 GUI_MESSAGE_DISPLAY = "Environment variable DISPLAY is not set."
 
 
+GUI_MESSAGE = "Developer Assistant GUI requires a running X server."
+GUI_MESSAGE_DISPLAY = "Environment variable DISPLAY is not set."
+
+
 def run_gui():
     """
     Function for running DevAssistant GUI
