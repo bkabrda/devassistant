@@ -1,8 +1,6 @@
 import os
 import sys
 
-from devassistant.gui import main_window
-from devassistant.gui import creator_window
 
 GUI_MESSAGE = "Developer Assistant GUI requires a running X server."
 GUI_MESSAGE_DISPLAY = "Environment variable DISPLAY is not set."
@@ -22,6 +20,7 @@ def run_gui():
     if not os.environ.get('DISPLAY'):
         print("%s %s" % (GUI_MESSAGE, GUI_MESSAGE_DISPLAY))
         sys.exit(1)
+    from devassistant.gui import main_window
     main_window.MainWindow()
 
 
@@ -36,4 +35,5 @@ def run_yaml_gui():
         print("%s: %r" % (e.__class__.__name__, str(e)))
         sys.exit(1)
 
+    from devassistant.gui import creator_window
     creator_window.CreatorWindow()
