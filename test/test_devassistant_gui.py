@@ -1,4 +1,5 @@
 import os
+import pytest
 from devassistant.gui import run_gui
 
 
@@ -10,8 +11,8 @@ class TestDevAssistantGUI(object):
         """
         test for detection wrong environment DISPLAY variable
         """
-        os.environ['DISPLAY'] = ""
-        try:
+        with pytest.raises(SystemExit):
+            display = os.environ.get('DISPLAY')
+            os.environ['DISPLAY'] = ""
             run_gui()
-        except SystemExit as se:
-            assert se.code == 1
+            os.environ['DISPLAY'] = display

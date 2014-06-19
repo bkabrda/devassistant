@@ -15,12 +15,14 @@ def run_gui():
     except ImportError as ie:
         pass
     except RuntimeError as e:
-        print(GUI_MESSAGE)
-        print("%s: %r" % (e.__class__.__name__, str(e)))
+        sys.stderr.write(GUI_MESSAGE)
+        sys.stderr.write("%s: %r" % (e.__class__.__name__, str(e)))
+        sys.stderr.flush()
         sys.exit(1)
 
     if not os.environ.get('DISPLAY'):
-        print("%s %s" % (GUI_MESSAGE, GUI_MESSAGE_DISPLAY))
+        sys.stderr.write("%s %s" % (GUI_MESSAGE, GUI_MESSAGE_DISPLAY))
+        sys.stderr.flush()
         sys.exit(1)
     from devassistant.gui import main_window
     main_window.MainWindow()
@@ -33,8 +35,9 @@ def run_yaml_gui():
     try:
         from gi.repository import Gtk
     except RuntimeError as e:
-        print(GUI_MESSAGE)
-        print("%s: %r" % (e.__class__.__name__, str(e)))
+        sys.stderr.write(GUI_MESSAGE)
+        sys.stderr.write("%s: %r" % (e.__class__.__name__, str(e)))
+        sys.stderr.flush()
         sys.exit(1)
 
     from devassistant.gui import creator_window
