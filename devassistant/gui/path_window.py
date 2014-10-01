@@ -43,6 +43,7 @@ class PathWindow(object):
         self.label_full_prj_dir = self.builder.get_object("labelFullPrjDir")
         self.h_separator = self.builder.get_object("hseparator")
         self.top_assistant = None
+        self.name_arg_present = False
         self.project_name_shown = True
         self.current_main_assistant = None
         self.data = dict()
@@ -93,15 +94,15 @@ class PathWindow(object):
         full_name = self.get_full_dir_name()
 
         # check whether project directory and name is properly set
-        if not deps_only and self.current_main_assistant.name == 'crt':
+        if not deps_only and self.name_arg_present:
             if project_dir == "":
                 return self.gui_helper.execute_dialog("Specify directory for project")
             else:
                 # check whether directory is existing
                 if not os.path.isdir(project_dir):
                     response = self.gui_helper.create_question_dialog(
-                        "Directory {0} does not exists".format(project_dir),
-                        "Do you want to create them?"
+                        "Directory {0} does not exist".format(project_dir),
+                        "Do you want to create it?"
                     )
                     if response == Gtk.ResponseType.NO:
                         # User do not want to create a directory
@@ -118,7 +119,7 @@ class PathWindow(object):
         if not self._build_flags():
             return
 
-        if not deps_only and self.current_main_assistant.name == 'crt':
+        if not deps_only and self.name_arg_present:
             self.kwargs['name'] = full_name
         self.kwargs['__ui__'] = 'gui_gtk+'
 
@@ -188,26 +189,31 @@ class PathWindow(object):
             self.current_main_assistant = data.get('current_main_assistant', None)
             self.kwargs = data.get('kwargs', None)
             self.data['debugging'] = data.get('debugging', False)
+
+        # get selectected assistants, but without TopAssistant itself
+        path = self.top_assistant.get_selected_subassistant_path(**self.kwargs)[1:]
+        # Check if 'name' argument is present 
+        self.name_arg_present = [x for x in path[-1].args if x.name == "name"]
+
+        # initialize project name and path form
         text = config_manager.get_config_value("da.project_dir") or self.get_user_path()
         self.dir_name.set_text(text)
         self.label_full_prj_dir.set_text(text)
         self.dir_name.set_sensitive(True)
         self.dir_name_browse_btn.set_sensitive(True)
         self._remove_widget_items()
-        if self.current_main_assistant.name != 'crt' and self.project_name_shown:
+        if not self.name_arg_present and self.project_name_shown:
             self.box6.remove(self.box_project)
             self.project_name_shown = False
-        elif self.current_main_assistant.name == 'crt' and not self.project_name_shown:
+        elif self.name_arg_present and not self.project_name_shown:
             self.box6.remove(self.box_path_main)
             self.box6.pack_start(self.box_project, False, False, 0)
             self.box6.pack_end(self.box_path_main, False, False, 0)
             self.project_name_shown = True
-        caption_text = "Project: "
-        row = 0
-        # get selectected assistants, but without TopAssistant itself
-        path = self.top_assistant.get_selected_subassistant_path(**self.kwargs)[1:]
-        caption_parts = []
 
+        caption_text = "Project: "
+        caption_parts = []
+        row = 0
         # Finds any dependencies
         found_deps = [x for x in path if x.dependencies()]
         # This bool variable is used for showing text "Available options:"
