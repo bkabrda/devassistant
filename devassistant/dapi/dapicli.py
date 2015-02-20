@@ -32,7 +32,7 @@ def _install_path():
         if path.endswith('/'):
             return os.path.expanduser(path[:-1])
         return os.path.expanduser(path)
-    if os.geteuid() == 0:
+    if getattr(os, 'geteuid', None) != None and os.geteuid() == 0:
         return DAPI_DEFAULT_ROOT_INSTALL
     return os.path.expanduser(DAPI_DEFAULT_USER_INSTALL)
 
