@@ -3,6 +3,13 @@ import os
 import sys
 import six
 
+try:
+    # try to enable ANSI colors in Windows
+    import colorama
+    colorama.init()
+except ImportError:
+    pass
+
 from devassistant import actions
 from devassistant import bin
 from devassistant.cli import argparse_generator
