@@ -522,7 +522,7 @@ class GitHubCommandRunner(CommandRunner):
 
     @classmethod
     def _guess_reponame(cls, explicit, ctxt):
-        """Extract reponame, either from explicitly given string or from 'name' global variable,
+        """Extract reponame, either from explicitly given string or from 'reponame' global variable,
         which is possibly a path.
 
         Args:
@@ -533,10 +533,10 @@ class GitHubCommandRunner(CommandRunner):
         """
         name = explicit
         if not name:
-            name = os.path.basename(ctxt.get('name', ''))
+            name = os.path.basename(ctxt.get('reponame', ''))
         if not name:
             raise exceptions.CommandException('Cannot guess Github reponame - no argument given'
-                                              'and there is no "name" variable.')
+                                              'and there is no "reponame" variable.')
         return name
 
     @classmethod
