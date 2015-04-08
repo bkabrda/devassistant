@@ -379,7 +379,7 @@ whose default values are taken from global context. E.g. ``create_and_push`` tak
 ``login``. If it is not specified, assistant variable ``github`` is used.
 
 ``create_repo``
-  Creates a repo with given ``reponame`` (defaults to var ``name``) for a user with
+  Creates a repo with given ``reponame`` (defaults to var ``reponame``) for a user with
   given login (defaults to var ``github``). Optionally accepts ``private`` argument
   to create repo as private (defaults to var ``github_private``).
 
