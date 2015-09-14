@@ -2,6 +2,16 @@ import logging
 import os
 import sys
 
+# --- Utility functions
+
+def is_root():
+    if not hasattr(os, 'geteuid'):
+        return False
+    else:
+        return (os.geteuid() == 0)
+
+# --- Settings
+
 GITHUB_SSH_CONFIG = '''
 # devassistant config for user {login}
 Host github.com-{login}
@@ -42,7 +52,7 @@ if 'DEVASSISTANT_NO_DEFAULT_PATH' not in os.environ:
                         '/usr/local/share/devassistant',
                         '/usr/share/devassistant/']
     # Remove ~/.devassistant for root:
-    if os.geteuid() == 0:
+    if is_root():
         DATA_DIRECTORIES = DATA_DIRECTORIES[1:]
     # DEVASSISTANT_HOME is ~/.devassistant for nonroot
     # or /usr/local/share/devassistant for root
