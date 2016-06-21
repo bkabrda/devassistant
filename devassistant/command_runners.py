@@ -1,6 +1,5 @@
 import copy
 import getpass
-import grp
 import json
 import logging
 import os
